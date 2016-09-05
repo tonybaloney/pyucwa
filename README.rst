@@ -15,7 +15,7 @@ pyucwa
 
 Skype for Business UCWA API client
 
-* Free software: ISC license
+* Free software: MIT license
 * Documentation: https://ucwa.readthedocs.org.
 
 Features

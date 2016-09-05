@@ -1,0 +1,68 @@
+{
+  "appId": "0b78a9be-6b65-42f3-b8e6-a0b21a8672c3",
+  "appRoles": [],
+  "availableToOtherTenants": false,
+  "displayName": "UCWA",
+  "errorUrl": null,
+  "groupMembershipClaims": null,
+  "homepage": "http://127.0.0.1:5000/",
+  "identifierUris": [
+    "http://127.0.0.1:5000/"
+  ],
+  "keyCredentials": [],
+  "knownClientApplications": [],
+  "logoutUrl": null,
+  "oauth2AllowImplicitFlow": true,
+  "oauth2AllowUrlPathMatching": false,
+  "oauth2Permissions": [
+    {
+      "adminConsentDescription": "Allow the application to access UCWA on behalf of the signed-in user.",
+      "adminConsentDisplayName": "Access UCWA",
+      "id": "30017c20-f9ae-4ade-8b39-6a5552eae052",
+      "isEnabled": true,
+      "type": "User",
+      "userConsentDescription": "Allow the application to access UCWA on your behalf.",
+      "userConsentDisplayName": "Access UCWA",
+      "value": "user_impersonation"
+    }
+  ],
+  "oauth2RequirePostResponse": false,
+  "passwordCredentials": [
+    {
+      "customKeyIdentifier": null,
+      "endDate": "2017-09-04T10:52:11.4034959Z",
+      "keyId": "0dca7120-4926-44bc-8bb2-a215714e415e",
+      "startDate": "2016-09-04T10:52:11.4034959Z",
+      "value": null
+    }
+  ],
+  "publicClient": null,
+  "replyUrls": [
+    "http://127.0.0.1:5000/",
+    "http://ucwa-test.com"
+  ],
+  "requiredResourceAccess": [
+    {
+      "resourceAppId": "00000002-0000-0000-c000-000000000000",
+      "resourceAccess": [
+        {
+          "id": "311a71cc-e848-46a1-bdf8-97ff7156d8e6",
+          "type": "Scope"
+        }
+      ]
+    }
+  ],
+  "samlMetadataUrl": null,
+  "extensionProperties": [],
+  "objectType": "Application",
+  "objectId": "c0cf1d73-ff6c-4e29-883e-539ddefe524e",
+  "deletionTimestamp": null,
+  "createdOnBehalfOf": null,
+  "createdObjects": [],
+  "manager": null,
+  "directReports": [],
+  "members": [],
+  "memberOf": [],
+  "owners": [],
+  "ownedObjects": []
+}
