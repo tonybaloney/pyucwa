@@ -29,10 +29,11 @@ def token_stage():
 
     token = request.form['access_token']
 
-    r = oauth_request(resource + '/ucwa/oauth/v1/applications', token,
-                      config['redirect_uri']+'/',
-                      resource, config['redirect_uri'])
-    print(r)
+    for u in ['http://127.0.0.1', 'https://parliamentfunksterhotmail.onmicrosoft.com', 'https://parliamentfunksterhotmail.onmicrosoft.com/bot']:
+        r = oauth_request(resource + '/ucwa/oauth/v1/applications', token,
+                          config['redirect_uri']+'/',
+                          resource, u)
+        print(r)
 
     # implicit grant flow token
     state = '8f0f4eff-360f-4c50-acf0-99cf8174a58b'
