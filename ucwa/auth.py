@@ -1,6 +1,5 @@
 ﻿from future.moves.urllib.parse import urlencode
 import requests
-import json
 from .actions import do_autodiscover
 from .config import load_config
 
@@ -54,19 +53,20 @@ def admin_consent(client_id, tenant, redirect_uri, resource, state):
     return url
 
 
-def grant_flow_token(client_id, tenant, redirect_uri, resource, state):
+def grant_flow_token(client_id, redirect_uri, resource, state, token):
     # Build the post form for the token request
     params = {
       'client_id': client_id,
-      'redirect_uri': redirect_uri,
-      'response_type': 'id_token',
-      'state': state,
+      'redirect_uri': redirect_uri + '?resource=' + resource,
+      'response_type': 'token',
+      'state': resource,
       'resource': resource,
-      'nonce': 'yousaywhat'
+      'prompt': 'none',
+      'response_mode': 'form_post',
     }
 
     # The token issuing endpoint
-    authorize_url = '{0}{1}'.format(authority, '/%s/oauth2/authorize?{0}' % tenant)
+    authorize_url = '{0}{1}'.format(authority, '/common/oauth2/authorize?{0}')
 
     # Format the sign-in url for redirection
     url = authorize_url.format(urlencode(params))
@@ -94,37 +94,7 @@ def get_token_from_code(client_id, tenant, auth_code, redirect_uri, resource, cl
     try:
         # try to parse the returned JSON for an access token
         access_token = response.json()['id_token']
-        print(response.text)
         return access_token
     except:
         raise Exception('Error retrieving token: {0} - {1}'.format(
           response.status_code, response.text))
-
-
-def oauth_request(uri, oauth_token, origin, pool, app_id):
-    headers = {
-        'Authorization': 'Bearer %s' % oauth_token,
-        'X-Ms-Origin': app_id,
-        'Accept': 'application/json',
-        'X-Requested-With': 'XMLHttpRequest',
-        'Referer': '%s/Autodiscover/XFrame/XFrame.html' % (pool)
-    }
-    response = requests.get(uri, headers=headers, verify=False)
-    return response.text
-
-
-def oauth_post_request(uri, oauth_token, origin, pool):
-    headers = {
-        'Authorization': 'Bearer %s' % oauth_token,
-        'X-Ms-Origin': origin,
-        'Accept': 'application/json',
-        'X-Requested-With': 'XMLHttpRequest',
-        'Referer': '%s/Autodiscover/XFrame/XFrame' % (pool)
-    }
-    msg = {
-        "UserAgent":"UCWA Samples",
-        "EndpointId":"a917c6f4-976c-4cf3-847d-cdfffa28ccdf",
-        "Culture":"en-US"
-       }
-    response = requests.post(uri, data=json.dumps(msg), headers=headers, verify=False)
-    return response.text

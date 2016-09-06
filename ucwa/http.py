@@ -1,7 +1,12 @@
 from flask import Flask, redirect, request
-from .auth import get_token_from_code, oauth_request, oauth_post_request, admin_consent
+from future.moves.urllib.parse import urlparse
+
 from .config import load_config
-from .actions import do_autodiscover
+from .actions import (do_autodiscover, do_user_discovery,
+                      do_application_discovery,
+                      register_application)
+from .auth import grant_flow_token
+import yaml
 
 app = Flask(__name__)
 
@@ -20,43 +25,46 @@ def autodiscover():
 
 @app.route('/token', methods=['POST'])
 def token_stage():
-    client_id = config['client_id']
-    tenant = config['domain']
-    redirect_uri = config['redirect_uri'] + '/token'
-
     # find out where this account is
     xframe, user_discovery_uri, resource = do_autodiscover(config['domain'])
 
+    # Get the inbound token as posted from a form
     token = request.form['access_token']
+    state = request.form['session_state']
 
-    for u in ['http://127.0.0.1', 'https://parliamentfunksterhotmail.onmicrosoft.com', 'https://parliamentfunksterhotmail.onmicrosoft.com/bot']:
-        r = oauth_request(resource + '/ucwa/oauth/v1/applications', token,
-                          config['redirect_uri']+'/',
-                          resource, u)
-        print(r)
+    # discover which web server we have been assigned to
+    user_discovery_data = do_user_discovery(resource, token, config)
 
-    # implicit grant flow token
-    state = '8f0f4eff-360f-4c50-acf0-99cf8174a58b'
-    url = admin_consent(client_id, tenant, redirect_uri + '2',
-                        resource, state)
-    print(url)
+    # Link to the current session server resource (we need a token for this.)
+    instance_url = user_discovery_data['_links']['applications']['href']
+
+    instance_parts = urlparse(instance_url)
+    instance_resource = '{0}://{1}'.format(instance_parts.scheme, instance_parts.netloc)
+
+    url = grant_flow_token(config['client_id'],
+                                     config['redirect_uri'] + '/directsession',
+                                     instance_resource, state, token)
+
     return redirect(url)
 
 
-@app.route('/token2', methods=['POST'])
-def token_stage2():
-    id_token = request.form['id_token']
-    session_state = request.form['session_state']
-    xframe, user_discovery_uri, resource = do_autodiscover(config['domain'])
-    # resend an autodiscovery request with the new bearer
-    origin = config['redirect_uri'] +'/'
+@app.route('/directsession', methods=['GET', 'POST'])
+def direct_sesssion_stage():
+    # Get the inbound token as posted from a form
+    token = request.form['access_token']
+    resource = request.form['state']
 
-    r = oauth_request(user_discovery_uri, id_token, origin, resource, config['app_id'])
-    print(r)
+    # app = register_application(resource, token, config)
+    # r = do_application_discovery(resource, token, config)
 
-    uri = resource  + '/ucwa/oauth/v1/applications'
+    app = {
+        'token': str(token),
+        'resource': str(resource)
+    }
 
-    r = oauth_post_request(uri, id_token, origin, resource)
-    return r
+    with open('instance.yml', 'w') as instance_f:
+        instance_f.write(yaml.dump(app))
+
+    return 'done. now run app.py'
 
 app.run()
