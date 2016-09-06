@@ -2,9 +2,7 @@ from flask import Flask, redirect, request
 from future.moves.urllib.parse import urlparse
 
 from .config import load_config
-from .actions import (do_autodiscover, do_user_discovery,
-                      do_application_discovery,
-                      register_application)
+from .actions import (do_autodiscover, do_user_discovery)
 from .auth import grant_flow_token
 import yaml
 

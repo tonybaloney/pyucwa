@@ -89,7 +89,7 @@ def get_token_from_code(client_id, tenant, auth_code, redirect_uri, resource, cl
     token_url = '{0}{1}'.format(authority, '/{0}/oauth2/token'.format(tenant))
 
     # Perform the post to get access token
-    response = requests.post(token_url, data=post_data, verify=False)
+    response = requests.post(token_url, data=post_data)
 
     try:
         # try to parse the returned JSON for an access token

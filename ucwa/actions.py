@@ -6,6 +6,7 @@ import json
 
 USER_AGENT = 'SkypeWeb/0.4.275 master UCWA/1.0.0-e4a1abbd7ca7d-84c26b3703da8'
 
+
 def do_autodiscover(domain):
     r = requests.get('https://webdir.online.lync.com/autodiscover/autodiscoverservice.svc/root?originalDomain=%s' % domain)
     discovery = r.json()
@@ -61,7 +62,7 @@ def oauth_post_request(uri, oauth_token, origin, msg):
         'X-Ms-SDK-Instance': USER_AGENT,
         'Referer': origin + '/'
     }
-    response = requests.post(uri, data=json.dumps(msg), headers=headers, verify=False)
+    response = requests.post(uri, data=json.dumps(msg), headers=headers)
     if response.text != '':
         return response.json()
     else:
@@ -81,7 +82,7 @@ def oauth_stream_request(uri, oauth_token, origin):
         'X-Ms-SDK-Instance': USER_AGENT,
         'Referer': origin + '/'
     }
-    response = requests.get(uri, headers=headers, verify=False, stream=True)
+    response = requests.get(uri, headers=headers, stream=True)
     return response
 
 
@@ -98,5 +99,5 @@ def oauth_request(uri, oauth_token, origin):
         'X-Ms-SDK-Instance': USER_AGENT,
         'Referer': origin + '/'
     }
-    response = requests.get(uri, headers=headers, verify=False)
+    response = requests.get(uri, headers=headers)
     return response.json()
