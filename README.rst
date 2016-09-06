@@ -29,6 +29,8 @@ Enter the pool for your tenant by visiting the URL : https://webdir.online.lync.
 
 Create a file config.yml with similar details
 
+.. code:: yaml
+
     redirect_uri: "http://127.0.0.1:5000"
     client_id: "0b78a9be-6b65-1234-b8e6-a0b21a8672c3"
     secret: "jPpYkK+sdf3423r="
