@@ -61,7 +61,7 @@ def process_conversation_event(message, resource, token, config):
 
     if message_type == 'added':
         thread_id = message['_embedded']['conversation']['threadId']
-        send_message(resource + messaging_uri + '/messages', 'hello from the bot', token, config['redirect_uri'])
+        send_message(resource + messaging_uri + '/messages', 'hi', token, config['redirect_uri'])
 
 
 def process_missed_items_event(message, resource, token, config):
@@ -80,7 +80,7 @@ def process_message_event(message, resource, token, config):
             logging.info("Received message - %s" % inbound_message)
 
             thread_uri = message['_embedded']['message']['_links']['messaging']['href']
-            send_message(resource + thread_uri + '/messages', 'you say "%s", I say potato' % inbound_message, token, config['redirect_uri'])
+            # send_message(resource + thread_uri + '/messages', 'I found 4 matching incidents https://it12321.servicenow.com/search?query={0}'.format(inbound_message), token, config['redirect_uri'])
     except KeyError:
         logging.debug('not an inbound message')
     pass
