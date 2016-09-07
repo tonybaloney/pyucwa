@@ -5,23 +5,14 @@ import urllib
 
 
 def process_events(event_list, resource, token, config):
-    rel_map = {
-        'messagingInvitation': process_message_invitation_event,
-        'communication': process_communication_event,
-        'conversation': process_conversation_event,
-        'missedItems': process_missed_items_event,
-        'message': process_message_event,
-    }
-
     for event in event_list:
         try:
             rel = event['link']['rel']
-            func = rel_map[rel]
+            func = EVENT_MAP[rel]
             func(event, resource, token, config)
         except KeyError:
             logging.warn("Not sure how to process - %s" % rel)
             logging.debug(event)
-
 
 
 def process_message_invitation_event(message, resource, token, config):
@@ -80,7 +71,20 @@ def process_message_event(message, resource, token, config):
             logging.info("Received message - %s" % inbound_message)
 
             thread_uri = message['_embedded']['message']['_links']['messaging']['href']
+
+            if MESSAGE_CALLBACK is not None:
+                MESSAGE_CALLBACK(inbound_message, thread_uri, resource)
             # send_message(resource + thread_uri + '/messages', 'I found 4 matching incidents https://it12321.servicenow.com/search?query={0}'.format(inbound_message), token, config['redirect_uri'])
     except KeyError:
         logging.debug('not an inbound message')
     pass
+
+EVENT_MAP = {
+    'messagingInvitation': process_message_invitation_event,
+    'communication': process_communication_event,
+    'conversation': process_conversation_event,
+    'missedItems': process_missed_items_event,
+    'message': process_message_event,
+}
+
+MESSAGE_CALLBACK = None

@@ -4,7 +4,7 @@ from ucwa.events import process_events
 
 from contextlib import closing
 import requests.exceptions
-import time
+
 import yaml
 
 import logging
@@ -25,7 +25,9 @@ logging.info('registering application against UCWA api')
 try:
     app = actions.register_application(resource, token, config)
 except requests.exceptions.HTTPError as he:
-    logging.error("Error registering the application, your token might be out of date, run `python authhelper.py` again. - %s " % he.message)
+    logging.error("Error registering the application, your token might be out"
+                  "of date, run `python authhelper.py` again. - %s "
+                  % he.message)
     exit(-1)
 
 logging.info('Registered app %s' % app['id'])
@@ -46,7 +48,7 @@ while True:
         event_response = events_stream.json()
 
     # get communication events
-    comm_evt = [e for e in event_response['sender']]
+    comm_evt = event_response['sender']
 
     if len(comm_evt) > 0:
         event_list = comm_evt[0]['events']
