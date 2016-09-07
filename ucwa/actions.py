@@ -62,7 +62,29 @@ def oauth_post_request(uri, oauth_token, origin, msg):
         'X-Ms-SDK-Instance': USER_AGENT,
         'Referer': origin + '/'
     }
-    response = requests.post(uri, data=json.dumps(msg), headers=headers)
+    response = requests.post(uri, data=json.dumps(msg), headers=headers, verify=False)
+    response.raise_for_status()
+    if response.text != '':
+        return response.json()
+    else:
+        return {}
+
+
+def oauth_post_text_request(uri, oauth_token, origin, data):
+    uid = uuid.uuid1()
+    headers = {
+        'Authorization': 'Bearer %s' % oauth_token,
+        'Origin': origin,
+        'Client-Request-Id': 'WebSDK/%s' % uid,
+        'Accept': 'application/json',
+        'Content-Type': 'text/plain',
+        'X-MS-Correlation-Id': uid,
+        'X-Ms-Namespace': 'internal',
+        'X-Ms-SDK-Instance': USER_AGENT,
+        'Referer': origin + '/'
+    }
+    response = requests.post(uri, data=data, headers=headers, verify=False)
+    response.raise_for_status()
     if response.text != '':
         return response.json()
     else:
@@ -82,7 +104,8 @@ def oauth_stream_request(uri, oauth_token, origin):
         'X-Ms-SDK-Instance': USER_AGENT,
         'Referer': origin + '/'
     }
-    response = requests.get(uri, headers=headers, stream=True)
+    response = requests.get(uri, headers=headers, stream=True, verify=False)
+    response.raise_for_status()
     return response
 
 
@@ -99,5 +122,10 @@ def oauth_request(uri, oauth_token, origin):
         'X-Ms-SDK-Instance': USER_AGENT,
         'Referer': origin + '/'
     }
-    response = requests.get(uri, headers=headers)
+    response = requests.get(uri, headers=headers, verify=False)
+    response.raise_for_status()
     return response.json()
+
+
+def send_message(uri, message, token, origin):
+    return oauth_post_text_request(uri, token, origin, message)
