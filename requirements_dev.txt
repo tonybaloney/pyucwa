@@ -8,4 +8,4 @@ Sphinx==1.3.1
 cryptography==1.0.1
 PyYAML==3.11
 requests
-
+-e git+https://github.com/PythonCharmers/python-future#egg=future
