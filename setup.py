@@ -29,7 +29,7 @@ setup(
     long_description=readme + '\n\n' + history,
     author="Anthony Shaw",
     author_email='anthonyshaw@apache.org',
-    url='https://github.com/tonybaloney/ucwa',
+    url='https://github.com/tonybaloney/pyucwa',
     packages=[
         'ucwa',
     ],
@@ -37,7 +37,7 @@ setup(
                  'ucwa'},
     include_package_data=True,
     install_requires=requirements,
-    license="ISCL",
+    license="APACHE2",
     zip_safe=False,
     keywords='ucwa',
     classifiers=[
