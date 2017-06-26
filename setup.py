@@ -24,7 +24,7 @@ test_requirements = [
 
 setup(
     name='ucwa',
-    version='0.2.0',
+    version='0.3.0',
     description="Skype for Business UCWA API client",
     long_description=readme + '\n\n' + history,
     author="Anthony Shaw",
