@@ -5,8 +5,8 @@ pyucwa
 .. image:: https://img.shields.io/pypi/v/ucwa.svg
         :target: https://pypi.python.org/pypi/ucwa
 
-.. image:: https://img.shields.io/travis/tonybaloney/ucwa.svg
-        :target: https://travis-ci.org/tonybaloney/ucwa
+.. image:: https://img.shields.io/travis/tonybaloney/pyucwa.svg
+        :target: https://travis-ci.org/tonybaloney/pyucwa
 
 .. image:: https://readthedocs.org/projects/ucwa/badge/?version=latest
         :target: https://readthedocs.org/projects/ucwa/?badge=latest
@@ -15,7 +15,7 @@ pyucwa
 
 Skype for Business UCWA API client
 
-* Free software: MIT license
+* Free software: Apache 2 license
 * Documentation: https://ucwa.readthedocs.org.
 
 Usage
