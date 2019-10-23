@@ -9,4 +9,4 @@ cryptography==1.0.1
 PyYAML==3.11
 requests
 -e git+https://github.com/PythonCharmers/python-future#egg=future
-Flask==0.11.1
+Flask==1.0
